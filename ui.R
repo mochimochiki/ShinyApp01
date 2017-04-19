@@ -1,33 +1,113 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
+# ui.R
 library(shiny)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
-  
-  # Sidebar with a slider input for number of bins 
+fluidPage(
+  titlePanel("censusVis"),
+
   sidebarLayout(
     sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
+      p("Create demographic maps with information from the 2010 US Census(国勢調査)."),
+      
+      # Combo box
+      # 第1引数のWidget名をserver側で使用して処理を行う
+      selectInput("var", 
+                  label = "Choose a variable to display", 
+                  choices = c("Percent White",
+                              "Percent Black",
+                              "Percent Hispanic",
+                              "Percent Asian"),
+                  selected = "Percent White"),
+      
+      # Slider Widget
+      sliderInput("range",
+                  label = "Range of interest:",
+                  min = 0, max = 100, value = c(0,100))
     ),
     
-    # Show a plot of the generated distribution
     mainPanel(
-       plotOutput("distPlot")
+      # xxOutput関数は引数を1つ持つ。reactive要素として使用する名前を入力する。
+      #textOutput("text1"),
+      #textOutput("text2")
+      
+      # plot
+      plotOutput("map")
     )
   )
-))
+)
+
+# いろんなWidgetを試せるUIだけのアプリ。
+# ここから下でUI.Rは完結しています。
+# shinyUI(fluidPage(
+#   titlePanel("Basic widgets"),
+#   
+#   fluidRow(
+#     
+#     column(3,
+#            h3("Buttons"),
+#            actionButton("action", label = "Action"),
+#            br(),
+#            br(), 
+#            submitButton("Submit")),
+#     
+#     column(3,
+#            h3("Single checkbox"),
+#            checkboxInput("checkbox", label = "Choice A", value = TRUE)),
+#     
+#     column(3, 
+#            checkboxGroupInput("checkGroup", 
+#                               label = h3("Checkbox group"), 
+#                               choices = list("Choice 1" = 1, 
+#                                              "Choice 2" = 2, "Choice 3" = 3),
+#                               selected = 1)),
+#     
+#     column(3, 
+#            dateInput("date", 
+#                      label = h3("Date input"), 
+#                      value = "2014-01-01"))   
+#   ),
+#   
+#   fluidRow(
+#     
+#     column(3,
+#            dateRangeInput("dates", label = h3("Date range"))),
+#     
+#     column(3,
+#            fileInput("file", label = h3("File input"))),
+#     
+#     column(3, 
+#            h3("Help text"),
+#            helpText("Note: help text isn't a true widget,", 
+#                     "but it provides an easy way to add text to",
+#                     "accompany other widgets.")),
+#     
+#     column(3, 
+#            numericInput("num", 
+#                         label = h3("Numeric input"), 
+#                         value = 1))   
+#   ),
+#   
+#   fluidRow(
+#     
+#     column(3,
+#            radioButtons("radio", label = h3("Radio buttons"),
+#                         choices = list("Choice 1" = 1, "Choice 2" = 2,
+#                                        "Choice 3" = 3),selected = 1)),
+#     
+#     column(3,
+#            selectInput("select", label = h3("Select box"), 
+#                        choices = list("Choice 1" = 1, "Choice 2" = 2,
+#                                       "Choice 3" = 3), selected = 1)),
+#     
+#     column(3, 
+#            sliderInput("slider1", label = h3("Sliders"),
+#                        min = 0, max = 100, value = 50),
+#            sliderInput("slider2", "",
+#                        min = 0, max = 100, value = c(25, 75))
+#     ),
+#     
+#     column(3, 
+#            textInput("text", label = h3("Text input"), 
+#                      value = "Enter text..."))   
+#   )
+#   
+# ))
